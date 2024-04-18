@@ -1,5 +1,36 @@
 class Solution {
 public:
+     vector<vector<int>> directions{{1,0},{-1,0},{0,1},{0,-1}};
+    void bfs(vector<vector<int>>& grid ,int i,int j ,int &peri){
+        int n = grid.size();
+        int m = grid[0].size();
+
+        queue<pair<int,int> >q;
+        q.push({i,j});
+        grid[i][j] = -1; //mark visited
+
+        while(!q.empty()){
+            auto front = q.front();
+            q.pop();            
+            
+            for(auto & dir : directions){
+                int i_ = front.first + dir[0];
+                int j_ = front.second + dir[1];
+
+                 if( i_ < 0 || i_ >= n || j_< 0 || j_ >= m || grid[i_][j_] == 0){
+                 peri++;
+        
+                 }else if(grid[i_][j_] == -1)
+                    continue;
+                else{
+                    q.push({i_,j_});
+                    grid[i_][j_] = -1;
+                }
+            }
+        }
+         
+
+    }
     void dfs(vector<vector<int>>& grid ,int i,int j ,int &peri){
          int n = grid.size();
         int m = grid[0].size();
@@ -29,7 +60,7 @@ public:
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 if(grid[i][j] == 1){
-                   dfs(grid,i,j,perimeter);
+                   bfs(grid,i,j,perimeter);
                 }
             }
         }
