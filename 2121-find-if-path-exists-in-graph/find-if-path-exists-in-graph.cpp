@@ -24,6 +24,23 @@ public:
             adj[v].push_back(u);
         }
         vector<bool>  visited(n,false);
-        return check(adj ,source,destination,visited);
+        //return check(adj ,source,destination,visited);
+
+        queue<int>q;
+        q.push(source);
+        visited[source] = true;
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            if(node == destination) return true;
+
+            for(auto & v : adj[node]){
+                if(!visited[v] ){
+                    q.push(v);
+                    visited[v] = true;
+                }
+            }
+        }
+        return false;
     }
 };
