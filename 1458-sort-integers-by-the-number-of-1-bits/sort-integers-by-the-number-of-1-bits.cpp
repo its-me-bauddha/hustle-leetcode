@@ -11,8 +11,8 @@ public:
     vector<int> sortByBits(vector<int>& arr) {
         
         auto lambda = [&](int & a ,int & b){
-            int count1BitInA = countOneBits(a);
-            int count1BitInB = countOneBits(b);
+            int count1BitInA = __builtin_popcount(a);
+            int count1BitInB = __builtin_popcount(b);
 
             if(count1BitInA == count1BitInB)
                 return a < b ;
