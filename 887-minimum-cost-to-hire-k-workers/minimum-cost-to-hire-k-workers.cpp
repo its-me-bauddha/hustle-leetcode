@@ -1,39 +1,43 @@
 class Solution {
 public:
-    double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) {
-        ios_base::sync_with_stdio(false);
-        cin.tie(nullptr);
-        cout.tie(nullptr);
+    double mincostToHireWorkers(vector<int>& quality, vector<int>& min_wage, int k) {
+       
         
-        vector<pair<double, int>> ratio;
-        int n = quality.size();
+         int n = quality.size();
+
+        vector<pair<double, int>> worker_ratio(n);
+        for(int worker = 0; worker < n; worker++) {
+            worker_ratio[worker] = make_pair((double)min_wage[worker]/quality[worker], quality[worker]);
+        }
+        sort(begin(worker_ratio), end(worker_ratio));
+
+        priority_queue<int, vector<int>> pq;
         
-        for (int i = 0; i < n; ++i) {
-                ratio.emplace_back(static_cast<double>(wage[i]) / quality[i], i);
-            }
+        double sum_quality = 0;
+        for(int i = 0; i < k; i++) { 
+            pq.push(worker_ratio[i].second); //push all qualities in max-heap
+            sum_quality += worker_ratio[i].second; //Find sum of qualities
+        }
+
+        double managerRatio = worker_ratio[k-1].first; 
+        double result       = managerRatio * sum_quality;
+
+        for(int manager = k; manager < n; manager++) {
             
-        sort(begin(ratio), end(ratio));
-        priority_queue<int> maxHeap;
-        int qualitySum = 0;
-        double maxRate = 0.0;
-        
-        for (int i = 0; i < k; ++i) {
-            qualitySum += quality[ratio[i].second];
-            maxRate = max(maxRate, ratio[i].first);
-            maxHeap.push(quality[ratio[i].second]);
+            managerRatio = worker_ratio[manager].first;
+
+            pq.push(worker_ratio[manager].second); //push all qualities in max-heap
+            sum_quality += worker_ratio[manager].second; //Find sum of qualities
+
+            if(pq.size() > k) {
+                sum_quality -= pq.top();
+                pq.pop();
+            }
+
+            result = min(result, managerRatio*sum_quality);
+
         }
 
-        double res = maxRate * qualitySum;
-        for (int i = k; i < n; ++i) {
-            maxRate = max(maxRate, ratio[i].first);
-            qualitySum -= maxHeap.top(); 
-            maxHeap.pop();
-
-            qualitySum += quality[ratio[i].second];
-            maxHeap.push(quality[ratio[i].second]);
-            res = min(res, maxRate * qualitySum);
-        }
-
-        return res;
+        return result;
     }
 };
