@@ -3,33 +3,31 @@ public:
     vector<int> productExceptSelf(vector<int>& nums) {
         int n = nums.size();
         vector<int> ans(n);
-        int pro = 1;
-        int cnt0 = 0 ;
+
+        int product = 1;
+        int cntZero = 0;
+
         bool flag = false;
+
         for(int i = 0;i<nums.size();i++){
             if(nums[i] != 0){
-                pro *=nums[i] ;
-               
-            }else{
+                product *=nums[i] ;
+            }
+            else{
                 flag = true;
-                cnt0++;
+                cntZero++;
             }
            
         }
        
         for(int i = 0 ;i<nums.size();i++){
-            if(flag){
-                if(nums[i] == 0    ){
-                    if(cnt0 > 1){
-                         ans[i] = 0;
-                    }else
-                     ans[i] = pro;
-                }else{
-                  ans[i] = 0 ;
-                }
+            if(flag && nums[i] == 0 && cntZero > 1 || flag &&  nums[i]!=0 ){
+                ans[i] = 0;
+            }else if(flag && nums[i] == 0 && cntZero == 1){
+                     ans[i] = product;
             }
             else{
-                ans[i] = pro/nums[i];
+                ans[i] = product/nums[i];
             }
            
         }
