@@ -18,9 +18,9 @@ public:
        bool right = evaluateTree(root -> right);
 
        if(root -> val == 2)
-            return left || right ;
+            return left | right ;
        if(root -> val == 3)
-            return left && right;
+            return left & right;
         else return root->val;
     }
 };
