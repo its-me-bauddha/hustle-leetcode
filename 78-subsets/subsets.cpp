@@ -1,20 +1,18 @@
 class Solution {
 public:
-    void  subset_helper(vector<int>& nums,vector<vector<int>>&ans,vector<int>&temp,int start){
+    void subsethelper(vector<int>& nums , vector<int>& temp ,int i ,vector<vector<int>> &ans){
+         ans.push_back(temp);
 
-       ans.push_back(temp);
-       for(int i = start ;i < nums.size();i++){
-        temp.push_back(nums[i]);
-        subset_helper(nums,ans,temp,i+1);
-        temp.pop_back();
+        for(int j = i ; j < nums.size();j++){
+        temp.push_back(nums[j]);
+        subsethelper(nums,temp,j+1,ans);
+        temp.pop_back(); 
         }
-
-    }
+       }
     vector<vector<int>> subsets(vector<int>& nums) {
-        
-        vector<vector<int>> ans ;
-        vector<int>temp;
-        subset_helper(nums,ans,temp,0);
+        vector<vector<int>> ans;
+        vector<int>temp ;
+        subsethelper(nums,temp,0,ans);
         return ans;
     }
 };
