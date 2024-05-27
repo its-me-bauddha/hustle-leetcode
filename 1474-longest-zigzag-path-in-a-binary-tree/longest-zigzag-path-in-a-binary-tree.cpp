@@ -12,26 +12,19 @@
 class Solution {
 public:
    
-    int solve(TreeNode* root , int steps,bool goLeft ,int &maxPath){
+    int solve(TreeNode* root , int left,int right ,int &maxPath){
         if(!root) return 0;
-         maxPath =  max(maxPath,steps); // store the longest path 
+         maxPath =  max(maxPath,max(left,right)); // store the longest path 
         
-        if(goLeft){ // go to left
-            solve(root->left,steps+1,false,maxPath);  // go to right
-            solve(root->right,1,true,maxPath); // go to left -> restart the new path
-        }
-        else{
-            // right jana hai 
-            solve(root->right,steps+1,true,maxPath); // go to right
-            solve(root->left,1,false,maxPath); // restart the new path 
-        }
+        solve(root->left,right+1,0,maxPath); //. goto to left via making right val =0 ,left = right+1
+        solve(root->right,0,left+1,maxPath);
+
         return maxPath;
     }
     int longestZigZag(TreeNode* root) {
-        int steps = 0;
-        bool goLeft = true;
-        int maxPath = 0;
-       int ans= solve(root,steps,goLeft ,maxPath);
-        return ans;
+
+       int maxPath = 0;
+       int ans= solve(root,0,0,maxPath);
+       return ans;
     }
 };
